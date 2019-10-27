@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Square Code</title>
+
+    <style>
+        body{
+            text-align:center;
+            margin:auto;
+        }
+        .header{
+            background-color:blue;
+            color:white;
+            padding-top:2px;
+            padding-bottom:2px;
+        }
+        .container{
+            background: linear-gradient(to bottom right, yellow , Red);
+            width:40%;
+            margin:auto;
+            text-align:center;
+        }
+
+        #textCount{
+            margin-top:5px;
+            margin-bottom:5px;
+            font-size:12px;
+        }
+        .SendMessage{
+            margin-top:20px;
+            margin-bottom:5px;
+        }
+        #sendMsg{
+            border-radius:3px;
+            padding:5px;
+        }
+        .normalText{
+            margin-top:20px;
+            margin-bottom:5px;
+        }
+
+        #normalCard{
+            color:black;
+            background-color:white;
+            font-size:12px;
+            padding:20px 0px 20px 0px;
+            border-radius:5px;
+            margin:auto;
+            width:80%;
+        }
+        .stackedText{
+            margin-top:20px;
+            margin-bottom:5px;
+        }
+        #stackedCard{
+            color:black;
+            background-color:white;
+            font-size:12px;
+            padding:50px 0px 50px 0px;
+            border-radius:5px;
+            margin:auto;
+            width:60%;
+
+        }
+        .codedText{
+            margin-top:20px;
+            margin-bottom:5px;
+        }
+        .codedCard{
+            color:black;
+            background-color:white;
+            font-size:12px;
+            padding:20px 0px 20px 0px;
+            border-radius:5px;
+            margin:auto;
+            width:80%;
+        }
+        #Encode {
+            color:blue;
+            padding:5px 25px 5px 25px;
+            margin-top:15px;
+            border-radius:8px;
+            margin-bottom:15px;
+        }
+        .encodeWrapper{
+            background-color:blue;
+            padding-top:5px;
+            padding-bottom:5px;
+            margin-top:10px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1 class="headerText">Square Code</h1>
+    </div>
+
+    <h3 class="SendMessage">Send Message</h3>
+    <input id="sendMsg"  value="" type="text" placeholder="Type your message here">
+    <p id="textCount">Total Characters: 0</p>
+    <h3 class="normalText">Normal Text</h3>
+    <div id="normalCard">
+
+    </div>
+    <h3 class="stackedText"> Stacked Text</h3>
+    <div id="stackedCard">
+
+    </div>
+    <h3 class="codedText">Coded Message</h3>
+    <div id="codedCard" class=codedCard>
+
+    </div>
+    <div class="encodeWrapper">
+        <button id="Encode">Encode</button>
+    </div>
+
+
+</div>
+
+<script>
+    let input= document.getElementById('sendMsg');
+    let button= document.getElementById('Encode');
+
+    input.addEventListener("keyup", function(){
+        let Counter = document.getElementById('sendMsg').value;
+        Counter= Counter.replace(/\s/g, "");
+        document.getElementById("textCount").innerHTML="Total Characters: " + Counter.length;
+    });
+    let TextNode = (document.createTextNode
+    (input.value.replace(/[^\w\s]|_/g, '').replace(/\s+/g, "").toLowerCase()));
+
+
+
+
+    button.addEventListener("click", function () {
+        if (input.value.length >=50) {
+            let Card = document.getElementById('normalCard');
+
+            let textCard = document.createElement("p");
+            let TextNode = (document.createTextNode
+            (input.value.replace(/[^\w\s]|_/g, '').replace(/\s+/g, "").toLowerCase()));
+            textCard.appendChild(TextNode);
+            Card.appendChild(textCard);
+            Card.style.overflow="scroll";
+        }  else{
+            alert("Enter more than 50 characters")
+        }
+
+
+
+    });
+
+    button.addEventListener("click", function () {
+
+        let stackCard = document.getElementById('stackedCard');
+        //let paraStack = document.createElement('p');
+        let nodeStack = (document.createTextNode(input.value.replace(/[^\w\s]|_/g, '').replace(/\s+/g, "").toLowerCase()));
+
+
+
+        let String= nodeStack.nodeValue;
+        // this wiil structure the text into a 8 columnns
+        let el=String.match(/.{1,8}/g);
+        /*
+        for (i in el){
+            node = document.createTextNode(el[i])
+            let paraStack = document.createElement('p');
+            paraStack.appendChild(node)
+            stackCard.appendChild(paraStack);
+        }*/
+
+
+
+        for (i in el){
+            let node = document.createTextNode(el[i]);
+            let paraStack = document.createElement('p');
+            paraStack.appendChild(node);
+            stackCard.appendChild(paraStack);
+        }
+
+        //stackCard.appendChild(paraStack);
+        console.log(el);
+        let output = [];
+
+        let first_word   = el[0].length;
+        console.log(first_word);
+
+        for (let index=0;index<first_word;index++){
+            let str = "";
+            for (i in el){
+                if (el[i].length> index){
+                    str += el[i][index];
+                }
+
+
+            }
+            output[index] = str;
+        }
+        console.log(output);
+        let encoding = output.join(' ');
+        console.log(encoding);
+        let text = document.createTextNode(encoding);
+        let para = document.createElement('p');
+        para.appendChild(text);
+        let encodedCard = document.getElementById('codedCard');
+        encodedCard.appendChild(para);
+        encodedCard.style.overflow="scroll";
+    });
+
+
+
+
+</script>
+</body>
+</html>
